@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- Кодировка и адаптивность: без viewport сайт на телефоне будет "мелким" -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baristacrat — кофейня в Таразе</title>
+  <meta name="description" content="Кофейня Baristacrat в Таразе: завтраки, кухня и большой бар. ТРЦ Mart, 1 этаж.">
+  <!-- Пока это демо: просим поисковики не показывать страницу. Убрать после согласия владельца -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Шрифты с Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Наши стили лежат в отдельном файле -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Плашка "демо". Удалить этот блок, когда владелец купит сайт -->
+  <div class="demo-bar">Демо-версия сайта для Baristacrat · не официальный сайт</div>
+
+  <!-- ШАПКА: логотип + меню -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">BARISTACRAT</a>
+
+      <!-- Кнопка-"бургер" видна только на телефоне -->
+      <button class="burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav">
+        <a href="#about">О нас</a>
+        <a href="#menu">Меню</a>
+        <a href="#contacts">Контакты</a>
+        <a href="#booking" class="btn btn--small">Забронировать</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ПЕРВЫЙ ЭКРАН (hero) что видит юзер -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <p class="hero__eyebrow">Кофейня в Таразе</p>
+        <h1 class="hero__title">Кофе, ради которого<br>стоит проснуться</h1>
+        <p class="hero__text">Завтраки, пасты, пицца и большой бар — кофе, авторские чаи, лимонады и bubble tea. Ждём вас с 9:00 до 23:00.</p>
+        <div class="hero__actions">
+          <a href="#booking" class="btn">Забронировать столик</a>
+          <a href="#menu" class="btn btn--ghost">Смотреть меню</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== О НАС: три преимущества ===== -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section__title">Что у нас есть</h2>
+        <div class="features">
+          <article class="feature">
+            <div class="feature__icon">🍳</div>
+            <h3>Завтраки</h3>
+            <p>15 видов завтраков: от яичницы с тостом до шакшуки и фирменного «Завтрака Баристакрат».</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon">🍝</div>
+            <h3>Полноценная кухня</h3>
+            <p>Супы, пасты, боулы, горячие блюда и пицца — можно зайти не только на кофе.</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon">🧋</div>
+            <h3>Большой бар</h3>
+            <p>Кофе, авторские чаи, лимонады, смузи, шейки и bubble tea.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== МЕНЮ: карточки с ценами ===== -->
+    <section class="section section--alt" id="menu">
+      <div class="container">
+        <h2 class="section__title">Меню</h2>
+        <!-- Меню-"книжка": вкладки сверху + страницы, которые листаются свайпом.
+             Всё содержимое строит script.js из файла menu-data.js -->
+        <div class="menu-book">
+          <div class="menu-groups" id="menuGroups"></div>
+          <div class="menu-tabs" id="menuTabs"></div>
+          <div class="menu-pages" id="menuPages"></div>
+          <div class="menu-nav">
+            <button class="menu-arrow" id="menuPrev" aria-label="Предыдущая страница">←</button>
+            <span class="menu-counter" id="menuCounter">1 / 1</span>
+            <button class="menu-arrow" id="menuNext" aria-label="Следующая страница">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ФОРМА БРОНИРОВАНИЯ ===== -->
+    <section class="section" id="booking">
+      <div class="container booking">
+        <div>
+          <h2 class="section__title section__title--left">Забронировать столик</h2>
+          <p>Оставьте заявку — мы перезвоним и подтвердим бронь.</p>
+        </div>
+
+        <!-- required = поле обязательно, браузер сам проверит его перед отправкой -->
+        <form class="form" id="bookingForm">
+          <label>Имя
+            <input type="text" name="name" placeholder="Как к вам обращаться" required>
+          </label>
+          <label>Телефон
+            <input type="tel" name="phone" placeholder="+7 700 000 00 00" required>
+          </label>
+          <div class="form__row">
+            <label>Дата
+              <input type="date" name="date" required>
+            </label>
+            <label>Гостей
+              <select name="guests">
+                <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5+</option>
+              </select>
+            </label>
+          </div>
+          <button type="submit" class="btn">Отправить заявку</button>
+          <p class="form__success" id="formSuccess" hidden>Спасибо! Мы скоро вам позвоним.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== ПОДВАЛ: контакты ===== -->
+  <footer class="footer" id="contacts">
+    <div class="container footer__inner">
+      <div>
+        <p class="logo">BARISTACRAT</p>
+        <p>ТРЦ Mart 1-ый этаж, Тараз</p>
+      </div>
+      <div>
+        <p>+7 701 999 9512</p>
+        <p>Ежедневно 9:00–23:00</p>
+      </div>
+      <div>
+        <a class="footer__insta" href="https://www.instagram.com/baristacrat_taraz/" target="_blank" rel="noopener">Instagram: @baristacrat_taraz</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Скрипт подключаем в конце, чтобы страница успела загрузиться -->
+  <script src="menu-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
