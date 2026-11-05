@@ -25,14 +25,12 @@ const counterEl = document.getElementById('menuCounter');
 const prevBtn = document.getElementById('menuPrev');
 const nextBtn = document.getElementById('menuNext');
 
-// Цена: 1400 -> "1 400 ₸", [1090, 1190] -> "1 090 / 1 190 ₸"
 const fmt = (n) => n.toLocaleString('ru-RU');
 const formatPrice = (p) => (Array.isArray(p) ? p.map(fmt).join(' / ') : fmt(p)) + ' ₸';
 
-// Список групп без повторов: ["Кухня", "Бар"]
 const groups = [...new Set(MENU.map(s => s.group))];
-let sections = [];  // категории выбранной группы
-let current = 0;    // номер открытой страницы
+let sections = [];
+let current = 0;
 
 // Кнопки "Кухня / Бар"
 groups.forEach(g => {
@@ -88,7 +86,7 @@ function updateUI() {
   const tab = tabsEl.children[current];
   if (tab) tabsEl.scrollTo({ left: tab.offsetLeft - tabsEl.clientWidth / 2 + tab.clientWidth / 2, behavior: 'smooth' });
   const page = pagesEl.children[current];
-  if (page) pagesEl.style.height = page.offsetHeight + 'px'; // высота = высоте открытой страницы
+  if (page) pagesEl.style.height = page.offsetHeight + 'px';
   counterEl.textContent = `${current + 1} / ${sections.length}`;
   prevBtn.disabled = current === 0;
   nextBtn.disabled = current === sections.length - 1;
@@ -105,20 +103,60 @@ showGroup(groups[0]);
 const form = document.getElementById('bookingForm');
 const success = document.getElementById('formSuccess');
 
-// Нельзя выбрать дату в прошлом
-form.date.min = new Date().toISOString().split('T')[0];
+// ---------- Дата и время только в часы работы ----------
+const OPEN_HOUR = 9;        // открытие
+const LAST_BOOKING = 22;    // последняя бронь 
+const STEP_MIN = 20;        
+
+const timeSelect = document.getElementById('timeSelect');
+const pad = (n) => String(n).padStart(2, '0');
+
+const now = new Date();
+const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+form.date.min = today; // нельзя выбрать дату в прошлом
+
+// Заполняем список времени. Если выбрана сегодняшняя дата — прошедшие слоты не показываем
+function fillTimes() {
+  const isToday = form.date.value === today;
+  const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+  timeSelect.innerHTML = '<option value="" disabled selected>Выберите</option>';
+
+  for (let m = OPEN_HOUR * 60; m <= LAST_BOOKING * 60; m += STEP_MIN) {
+    if (isToday && m <= nowMinutes) continue; // это время уже прошло
+    const t = `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+    timeSelect.add(new Option(t, t));
+  }
+
+  // Сегодня свободных слотов не осталось
+  if (timeSelect.options.length === 1) {
+    timeSelect.options[0].textContent = 'Сегодня уже поздно';
+  }
+}
+
+form.date.addEventListener('change', fillTimes);
+fillTimes();
+
+const WHATSAPP_NUMBER = '77019999512';
 
 form.addEventListener('submit', (event) => {
-  event.preventDefault(); // не даём странице перезагрузиться
+  event.preventDefault();
 
-  // Собираем данные формы в обычный объект
   const data = Object.fromEntries(new FormData(form));
-  console.log('Заявка:', data);
 
-  // В реальном заказе здесь отправка на сервер или в Telegram-бота:
-  // fetch('/api/booking', { method: 'POST', body: JSON.stringify(data) })
+  const date = data.date.split('-').reverse().join('.');
 
-  form.reset();
+  const text =
+    `Здравствуйте! Хочу забронировать столик.\n` +
+    `Имя: ${data.name}\n` +
+    `Дата: ${date}, ${data.time}\n` +
+    `Гостей: ${data.guests}` +
+    (data.comment ? `\nКомментарий: ${data.comment}` : '');
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+
   success.hidden = false;
-  setTimeout(() => (success.hidden = true), 5000);
+  setTimeout(() => (success.hidden = true), 4000);
+  form.reset();
+  fillTimes();
 });

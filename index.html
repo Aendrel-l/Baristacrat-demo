@@ -71,7 +71,7 @@
             <p>Супы, пасты, боулы, горячие блюда и пицца — можно зайти не только на кофе.</p>
           </article>
           <article class="feature">
-            <div class="feature__icon">🧋</div>
+            <div class="feature__icon">☕</div>
             <h3>Большой бар</h3>
             <p>Кофе, авторские чаи, лимонады, смузи, шейки и bubble tea.</p>
           </article>
@@ -103,7 +103,7 @@
       <div class="container booking">
         <div>
           <h2 class="section__title section__title--left">Забронировать столик</h2>
-          <p>Оставьте заявку — мы перезвоним и подтвердим бронь.</p>
+          <p>Заполните форму — откроется WhatsApp с готовым сообщением. Отправьте его, и администратор подтвердит бронь.</p>
         </div>
 
         <!-- required = поле обязательно, браузер сам проверит его перед отправкой -->
@@ -111,21 +111,25 @@
           <label>Имя
             <input type="text" name="name" placeholder="Как к вам обращаться" required>
           </label>
-          <label>Телефон
-            <input type="tel" name="phone" placeholder="+7 700 000 00 00" required>
-          </label>
           <div class="form__row">
             <label>Дата
               <input type="date" name="date" required>
             </label>
-            <label>Гостей
-              <select name="guests">
-                <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5+</option>
-              </select>
+            <label>Время
+              <!-- Варианты времени заполняет script.js: только часы работы -->
+              <select name="time" id="timeSelect" required></select>
             </label>
           </div>
-          <button type="submit" class="btn">Отправить заявку</button>
-          <p class="form__success" id="formSuccess" hidden>Спасибо! Мы скоро вам позвоним.</p>
+          <label>Гостей
+            <select name="guests">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option>
+            </select>
+          </label>
+          <label>Комментарий
+            <input type="text" name="comment" placeholder="Например: у окна, детский стул">
+          </label>
+          <button type="submit" class="btn">Отправить в WhatsApp</button>
+          <p class="form__success" id="formSuccess" hidden>Открываем WhatsApp…</p>
         </form>
       </div>
     </section>
