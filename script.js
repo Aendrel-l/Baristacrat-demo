@@ -136,7 +136,7 @@ function fillTimes() {
 form.date.addEventListener('change', fillTimes);
 fillTimes();
 
-const WHATSAPP_NUMBER = '77019999512';
+const WHATSAPP_NUMBER = '77021067310';
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
